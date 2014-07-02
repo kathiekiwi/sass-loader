@@ -1,3 +1,4 @@
+var temp = require('temp');
 var util = require('util');
 var fs = require('fs');
 var utils = require('loader-utils');
@@ -29,24 +30,25 @@ module.exports = function (content) {
         opt.stats.includedFiles.forEach(function(path) {
             this.addDependency(path);
         }, this);
-        if (fs.existsSync("tmp.sass")){
-          fs.unlinkSync("tmp.sass");
-        }
         callback(null, css);
     }.bind(this);
 
     opt.error = function (err) {
-        if (fs.existsSync("tmp.sass")){
-          fs.unlinkSync("tmp.sass");
-        }
-        callback(err);
+      callback(err);
     };
 
     if(opt.format == 'sass') {
-      fs.writeFileSync("tmp.sass", opt.data);
-      delete opt.data;
-      opt.file = "tmp.sass";
-      sass.render(opt);
+      temp.track();
+      temp.open({suffix: '.sass'}, function(err, info) {
+        if (err) throw err;
+        fs.write(info.fd, opt.data);
+        fs.close(info.fd, function(err) {
+          if (err) throw err;
+          delete opt.data;
+          opt.file = info.path;
+          sass.render(opt);
+        });
+      });
     } else {
       sass.render(opt);
     }
