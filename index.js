@@ -5,7 +5,6 @@ var utils = require('loader-utils');
 var sass = require('node-sass');
 var path = require('path');
 
-
 module.exports = function (content) {
     this.cacheable();
     var callback = this.async();
@@ -38,6 +37,7 @@ module.exports = function (content) {
     };
 
     if(opt.format == 'sass') {
+      opt.sourceComments == "none"
       temp.track();
       temp.open({suffix: '.sass'}, function(err, info) {
         if (err) throw err;
