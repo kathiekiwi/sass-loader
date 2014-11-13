@@ -29,10 +29,12 @@ module.exports = function (content) {
         opt.stats.includedFiles.forEach(function(path) {
             this.addDependency(path);
         }, this);
+        temp.cleanupSync();
         callback(null, css);
     }.bind(this);
 
     opt.error = function (err) {
+      temp.cleanupSync();
       callback(err);
     };
 
@@ -47,7 +49,6 @@ module.exports = function (content) {
           delete opt.data;
           opt.file = info.path;
           sass.render(opt);
-          //temp.cleanupSync();
         });
       });
     } else {
