@@ -47,6 +47,7 @@ module.exports = function (content) {
           delete opt.data;
           opt.file = info.path;
           sass.render(opt);
+          temp.cleanupSync();
         });
       });
     } else {
