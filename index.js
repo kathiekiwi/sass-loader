@@ -41,7 +41,7 @@ module.exports = function (content) {
       temp.track();
       temp.open({suffix: '.sass'}, function(err, info) {
         if (err) throw err;
-        fs.write(info.fd, opt.data);
+        fs.writeSync(info.fd, opt.data);
         fs.close(info.fd, function(err) {
           if (err) throw err;
           delete opt.data;
