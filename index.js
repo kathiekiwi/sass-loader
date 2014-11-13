@@ -29,12 +29,12 @@ module.exports = function (content) {
         opt.stats.includedFiles.forEach(function(path) {
             this.addDependency(path);
         }, this);
-        temp.cleanupSync();
+        // temp.cleanupSync();
         callback(null, css);
     }.bind(this);
 
     opt.error = function (err) {
-      temp.cleanupSync();
+      // temp.cleanupSync();
       callback(err);
     };
 
